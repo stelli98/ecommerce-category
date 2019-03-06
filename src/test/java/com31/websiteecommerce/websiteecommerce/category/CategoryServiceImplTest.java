@@ -6,6 +6,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Optional;
+
 public class CategoryServiceImplTest {
 
     private CategoryServiceImpl categoryService;
@@ -31,8 +33,8 @@ public class CategoryServiceImplTest {
 
         Category categoryA=new Category(Long.valueOf(1), "Electronic");
         categoryService.create(categoryA);
-        Category searchCategory1= categoryService.findById(Long.valueOf(1));
-        Category searchCategory2= categoryService.findById(Long.valueOf(13));
+        Optional<Category> searchCategory1= categoryService.findById(Long.valueOf(1));
+        Optional<Category> searchCategory2= categoryService.findById(Long.valueOf(13));
         Assert.assertTrue("Must return Electronic Category Details", categoryA.equals(searchCategory1));
         Assert.assertTrue("Can't find unregistered id",searchCategory2==null);
     }
@@ -51,10 +53,10 @@ public class CategoryServiceImplTest {
     public void updateTest(){
         Category categoryA=new Category(Long.valueOf(1), "Electronic");
         categoryService.create(categoryA);
-        Category updateCategory1= categoryService.update(new Category(Long.valueOf(1),"Fashion"));
-        Category updateCategory2= categoryService.update(new Category(Long.valueOf(11),"Fashion"));
+        Optional<Category> updateCategory1= categoryService.update(new Category(Long.valueOf(1),"Fashion"));
+        Optional<Category> updateCategory2= categoryService.update(new Category(Long.valueOf(11),"Fashion"));
 
-        Assert.assertTrue("Category name must change to Fashion",updateCategory1.getName().equals("Fashion"));
+        Assert.assertTrue("Category name must change to Fashion",updateCategory1.get().getName().equals("Fashion"));
         Assert.assertTrue("Can't change the unregistered id",updateCategory2 == null);
 
     }

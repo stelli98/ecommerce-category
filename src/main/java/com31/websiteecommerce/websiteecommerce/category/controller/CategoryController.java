@@ -5,8 +5,8 @@ import com31.websiteecommerce.websiteecommerce.category.service.CategoryService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class CategoryController {
@@ -22,7 +22,7 @@ public class CategoryController {
     }
 
     @GetMapping(value = "/categories/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Category findById(@PathVariable Long id){
+    public Optional<Category> findById(@PathVariable Long id){
         return categoryService.findById(id);
     }
 
@@ -38,7 +38,7 @@ public class CategoryController {
             produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public Category update(@RequestBody Category category){
+    public Optional<Category> update(@RequestBody Category category){
         return categoryService.update(category);
     }
 

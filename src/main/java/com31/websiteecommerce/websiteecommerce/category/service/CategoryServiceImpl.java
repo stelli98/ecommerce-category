@@ -1,44 +1,39 @@
 package com31.websiteecommerce.websiteecommerce.category.service;
 
 import com31.websiteecommerce.websiteecommerce.category.model.Category;
+import com31.websiteecommerce.websiteecommerce.category.repository.CategoryRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CategoryServiceImpl implements CategoryService {
 
-    private ArrayList<Category> categories = new ArrayList<>();
+    private CategoryRepository categoryRepository;
     @Override
     public Category create(Category category) {
-        if(findById(category.getId())==null){
-            categories.add(category);
-            return category;
+        if(!findById(category.getId()).isPresent()){
+            return categoryRepository.save(category);
         }
         return null;
     }
 
     @Override
-    public Category findById(Long id) {
-        for(Category p:categories){
-            if(p.getId().equals(id)){
-                return p;
-            }
-        }
-        return null;
+    public Optional<Category> findById(Long id) {
+        return categoryRepository.findById(id);
     }
 
     @Override
     public List<Category> findAll() {
-        return categories;
+        return categoryRepository.findAll();
     }
 
     @Override
-    public Category update(Category category) {
-        Category updateCategory= findById(category.getId());
-        if(updateCategory!=null){
+    public Optional<Category> update(Category category) {
+        Optional<Category> updateCategory= findById(category.getId());
+        if(updateCategory.isPresent()){
             BeanUtils.copyProperties(category,updateCategory);
             return updateCategory;
         }
@@ -47,10 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category delete( Long id) {
-        Category category= findById(id);
-        if(category!=null){
-            categories.remove(category);
-            return category;
+        Optional<Category> category= findById(id);
+        if(category.isPresent()){
+            categoryRepository.delete(category.get());
+            return category.get();
         }
         return null;
     }
