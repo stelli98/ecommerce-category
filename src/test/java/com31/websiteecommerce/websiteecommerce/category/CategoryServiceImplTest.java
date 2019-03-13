@@ -1,50 +1,70 @@
 package com31.websiteecommerce.websiteecommerce.category;
 
 import com31.websiteecommerce.websiteecommerce.category.entity.Category;
+import com31.websiteecommerce.websiteecommerce.category.repository.CategoryRepository;
 import com31.websiteecommerce.websiteecommerce.category.service.CategoryServiceImpl;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import sun.invoke.empty.Empty;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 public class CategoryServiceImplTest {
 
     private CategoryServiceImpl categoryService;
+    private CategoryRepository categoryRepository;
 
     @Before
     public void setUp() throws Exception {
-        categoryService=new CategoryServiceImpl();
+        categoryRepository = Mockito.mock(CategoryRepository.class);
+        categoryService=new CategoryServiceImpl(categoryRepository);
     }
 
     @Test
     public void createTest(){
         Category categoryA=new Category(Long.valueOf(1), "Electronic");
-        categoryService.create(categoryA);
-        Category categoryB=new Category(Long.valueOf(1),"Fashion");
-        categoryService.create(categoryB);
-        Assert.assertTrue("Array size must be 1", categoryService.findAll().size() == 1);
-        Assert.assertFalse("Category can't have similar id",
-                categoryService.findById(categoryB.getId())== null);
+
+        Mockito.when(categoryRepository.save(categoryA)).thenReturn(categoryA);
+        Category save=categoryService.create(categoryA);
+
+        Assert.assertNotNull("Category isn't null",save);
+        Assert.assertTrue("Category name is electronic", categoryA.getName().equals(save.getName()));
     }
 
     @Test
     public void findByIdTest(){
-
-        Category categoryA=new Category(Long.valueOf(1), "Electronic");
+        Category categoryA=new Category(1L, "Electronic");
+        Mockito.when(categoryRepository.save(categoryA)).thenReturn(categoryA);
         categoryService.create(categoryA);
-        Optional<Category> searchCategory1= categoryService.findById(Long.valueOf(1));
-        Optional<Category> searchCategory2= categoryService.findById(Long.valueOf(13));
-        Assert.assertTrue("Must return Electronic Category Details", categoryA.equals(searchCategory1));
-        Assert.assertTrue("Can't find unregistered id",searchCategory2==null);
+
+        Mockito.when(categoryRepository.findById(1L)).thenReturn(Optional.ofNullable(categoryA));
+        Optional<Category> searchCategory1= categoryService.findById(1L);
+        Assert.assertTrue("Must return Electronic Category Details", categoryA.equals(searchCategory1.get()));
+
+
+        Mockito.when(categoryRepository.findById(13L)).thenReturn(Optional.empty());
+        Optional<Category> searchCategory2= categoryService.findById(13L);
+        Assert.assertFalse("Can't find unregistered id",searchCategory2.isPresent());
     }
 
     @Test
     public void findAllTest(){
         Category categoryA=new Category(Long.valueOf(1), "Electronic");
+        Mockito.when(categoryRepository.save(categoryA)).thenReturn(categoryA);
         categoryService.create(categoryA);
+
         Category categoryB=new Category(Long.valueOf(2),"Fashion");
-        categoryService.create(categoryB);;
+        Mockito.when(categoryRepository.save(categoryA)).thenReturn(categoryA);
+        categoryService.create(categoryB);
+
+        ArrayList<Category> categories=new ArrayList<>();
+        categories.add(categoryA);
+        categories.add(categoryB);
+        Mockito.when(categoryRepository.findAll()).thenReturn(categories);
         Assert.assertTrue("Array size must be 2", categoryService.findAll().size()==2);
 
     }

@@ -12,8 +12,12 @@ import java.util.Optional;
 @Component
 public class CategoryServiceImpl implements CategoryService {
 
-    @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
 
     @Override
     public Category create(Category category) {

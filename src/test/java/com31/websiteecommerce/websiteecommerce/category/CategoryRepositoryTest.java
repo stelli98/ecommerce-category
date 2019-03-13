@@ -27,12 +27,12 @@ public class CategoryRepositoryTest {
 
 
     @Test
-    public void saveTest(){
+    public void createTest(){
         Category categoryA=new Category();
         categoryA.setName("Electronic");
         Category save= categoryRepository.save(categoryA);
-        Assert.assertNotNull("Category id A can't be null", categoryA.getId());
-        Assert.assertTrue("Category name must be Stelli", save.getName().equals("Electronic"));
+        Assert.assertNotNull("Category id A can't be null", save.getId());
+        Assert.assertTrue("Category name must be Electronic", save.getName().equals(categoryA.getName()));
         Assert.assertTrue("Category id must same with the saved one", categoryA.getId() == save.getId());
 
     }
@@ -50,12 +50,12 @@ public class CategoryRepositoryTest {
     public void findByAllTest(){
         Category categoryA=new Category();
         categoryA.setName("Electronic");
-        Category saveCategoryA= categoryRepository.save(categoryA);
+        categoryRepository.save(categoryA);
 
 
         Category categoryB=new Category();
         categoryB.setName("Fashion");
-        Category saveCategoryB= categoryRepository.save(categoryB);
+        categoryRepository.save(categoryB);
 
         List<Category> find= categoryRepository.findAll();
         Assert.assertTrue("List size must be 2", find.size()==2);
@@ -65,7 +65,7 @@ public class CategoryRepositoryTest {
     public void deleteTest(){
         Category categoryA=new Category();
         categoryA.setName("Electronic");
-        Category saveCategoryA= categoryRepository.save(categoryA);
+        categoryRepository.save(categoryA);
 
         Category categoryB=new Category();
         categoryB.setName("Fashion");
@@ -73,7 +73,7 @@ public class CategoryRepositoryTest {
 
         Category categoryC=new Category();
         categoryC.setName("Food");
-        Category saveCategoryC= categoryRepository.save(categoryC);
+        categoryRepository.save(categoryC);
 
 
         categoryRepository.delete(saveCategoryB);
