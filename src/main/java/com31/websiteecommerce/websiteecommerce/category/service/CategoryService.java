@@ -1,6 +1,6 @@
 package com31.websiteecommerce.websiteecommerce.category.service;
 
-import com31.websiteecommerce.websiteecommerce.category.model.Category;
+import com31.websiteecommerce.websiteecommerce.category.entity.Category;
 
 import java.util.List;
 import java.util.Optional;

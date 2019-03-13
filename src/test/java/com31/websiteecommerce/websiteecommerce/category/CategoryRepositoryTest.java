@@ -1,6 +1,6 @@
 package com31.websiteecommerce.websiteecommerce.category;
 
-import com31.websiteecommerce.websiteecommerce.category.model.Category;
+import com31.websiteecommerce.websiteecommerce.category.entity.Category;
 import com31.websiteecommerce.websiteecommerce.category.repository.CategoryRepository;
 import org.junit.After;
 import org.junit.Assert;
@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.swing.*;
 import java.util.List;
 import java.util.Optional;
 

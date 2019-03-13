@@ -1,4 +1,4 @@
-package com31.websiteecommerce.websiteecommerce.category.model;
+package com31.websiteecommerce.websiteecommerce.category.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

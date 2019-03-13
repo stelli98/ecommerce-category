@@ -1,8 +1,9 @@
 package com31.websiteecommerce.websiteecommerce.category.service;
 
-import com31.websiteecommerce.websiteecommerce.category.model.Category;
+import com31.websiteecommerce.websiteecommerce.category.entity.Category;
 import com31.websiteecommerce.websiteecommerce.category.repository.CategoryRepository;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -11,13 +12,12 @@ import java.util.Optional;
 @Component
 public class CategoryServiceImpl implements CategoryService {
 
+    @Autowired
     private CategoryRepository categoryRepository;
+
     @Override
     public Category create(Category category) {
-        if(!findById(category.getId()).isPresent()){
-            return categoryRepository.save(category);
-        }
-        return null;
+        return categoryRepository.save(category);
     }
 
     @Override
